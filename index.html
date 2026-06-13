@@ -228,7 +228,7 @@
     }
     
     .hidden-overlay {
-      display: none !important;
+      display: none !important; /* priority */
     }
     
     .skills-project {
@@ -291,17 +291,17 @@
       color: #ffffffff;
     }
     
-    /* Clean text accordion for UX case studies */
+    /* drop-down for UX case studies text */
     .case-study-dropdown {
       margin-top: 25px;
       margin-bottom: 15px;
     }
 
     .case-study-dropdown summary {
-      display: inline-block;
+      display: inline-block; /* elements sit side by side : can customize */
       color: #93c5fd;
       font-weight: 600;
-      cursor: pointer;
+      cursor: pointer; /* changes when hovering : clickable */
       font-size: 1.05rem;
       transition: color 0.2s ease;
     }
@@ -360,13 +360,13 @@
       background-color: #7c3aed;
     }
 
-    /* for mobile response */
+    /* for mobile response : viewed off desktop */
     @media (max-width: 600px) {
       .image-comparison-grid {
         flex-direction: column; /* column style */
       }
     }
-    /* The Collapsible Box Container */
+    /* The collapsible box Container for code */
     .code-dropdown {
       margin-top: 15px;
       margin-bottom: 15px;
@@ -816,7 +816,7 @@ compared_plots +
     const clickAnywhere = document.getElementById("image-overlay"); /* grab tag */
     clickAnywhere.addEventListener("click", () => { /* on click event */
       overlay.classList.add("hidden-overlay"); /* add overlay */
-      overlayImg.src = ""; /* src path none */
+      overlayImg.src = ""; /* sets src path back to none */
     });
     
   </script>
