@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kara Rippe's Portfolio</title>
+
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin: 0;
+      padding: 0;
+      background-color: #21252B;
+      padding-bottom: 60px;
+    }
+    
+    .wallpaper-background {
+      width: 100%;
+      max-width: 900px; /* re : don't hard-code */
+      margin: 30px auto;
+      border-radius: 8px;
+      padding: 40px;
+      overflow: hidden; /* cut overflow extended from boundary */
+      background-image: url("https://i.pinimg.com/webp87/1200x/7e/0e/9a/7e0e9ad53322bde578247b67684ddd74.webp");
+      background-size: cover; /* cover whole area */
+      background-position: center;
+      box-sizing: border-box; /* element never exceeds width */
+    }
+    
+    .about {
+      -webkit-backdrop-filter: blur(8px); /* safar compat ver */
+      backdrop-filter: blur(8px);
+      background-color: rgba(43, 49, 58, 0.85);
+      border: 1px solid #0099ff;
+      border-radius: 8px;
+      padding: 30px;
+    }
+    
+    .port-filter {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .filter-pill {
+      background-color: #282C34;
+      border: 1px solid #1e293b;
+      color: #9ab0c5;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-family: "Segoe UI", sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600; /* weight : no specification */
+      cursor: pointer; /* when hover */
+      transition: all 0.2s ease; /* all elements */
+    }
+    
+    .filter-pill:hover {
+      color: #9ab0c5;
+      border-color: #9ab0c5;
+    }
+    
+    .filter-pill-active {
+      background-color: #93c5fd;
+      color: #21252b; /* text : keep black and readable */
+      border-color: #93c5fd;
+    }
+    
+    .hidden-card {
+      display: none !important; /* priority */
+    }
+    
+    .portfolio-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    
+    header {
+      background-color: #282C34;
+      position: sticky; /* sticks : follows */
+      top: 0;
+      z-index: 100;
+      padding: 20px 0;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    header h1 { /* or > h1 */
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.02rem;
+    }
+
+    header p {
+      margin: 5px 0 0 0;
+      color: #9ab0c5;
+      font-size: 0.95rem;
+    }
+    
+    nav { /* nav elements */
+      margin-top: 10px;
+      color: #475569;
+    }
+
+    nav a { /* a href link */
+      color: #93c5fd;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem; /* relative to root element - can use z-index */
+      letter-spacing: 0.02em; /* relative to parent element nav -> */
+      transition: color 0.2s ease-in-out;
+    }
+
+    nav a:hover {
+      color: #3b82f6;
+    }
+    
+    main {
+      padding-top: 40px;
+    }
+
+    main h2 {
+      color: #f8fafc;
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid #1e293b;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+    }
+    
+    .project-card {
+      background-color: #2B313A;
+      padding: 30px;
+      margin-top: 25px;
+      margin-bottom: 25px;
+      border-radius: 6px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);/* inset, offsetX, offsetY, blur rad, spread rad, color */
+      transform: translateZ(0); /* reposition : z-axis */
+    }
+    
+    .project-card h4 {
+      font-family: "Courier New", Courier, Monospace;
+      font-size: 1.35rem;
+      color: #f8fafc;
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
+    .project-card p {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #cbd5e1;
+    }
+
+    .project-card h5 {
+      font-family: "Courier New", Courier, Monospace;
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+    }
+
+    .project-card-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid #475569;
+      padding-bottom: 6px;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      color: #ffffff;
+    }
+
+    .project-card ul { /* bulletin */
+      margin-top: 0;
+      margin-bottom: 15px;
+      padding-left: 20px;
+    }
+
+    .project-card li {
+      margin-bottom: 8px;
+    }
+
+    .project-card a {
+      display: inline-block;
+      background-color: #3b82f6;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 8px 18px;
+      border-radius: 4px;
+      font-family: "Courier New", courier, monospace;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-top: 15px;
+      transition: all 0.2s ease-in-out;
+    }
+    
+    .project-card a:hover {
+      background-color: #2563eb;
+      transform: translateY(-1px); /* move vertically : -1 pixel */
+    }
+    
+    .ux-project { 
+      border-left: 4px solid #8b5cf6; 
+    }
+      
+    .ux-project h5 { 
+      background-color: rgba(139, 92, 246, 0.15); 
+      color: #a78bfa; 
+    }
+    
+    .data-project { 
+      border-left: 4px solid #06b6d4; 
+    }
+    .data-project h5 { 
+      background-color: rgba(6, 182, 212, 0.15); 
+      color: #22d3ee; 
+    }
+    
+    .hidden-overlay {
+      display: none !important;
+    }
+    
+    .skills-project {
+      padding-top: 1px;
+    }
+
+    #contact {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid #1e293b;
+    }
+
+    #contact a {
+      color: #93c5fd;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em; /* em : relative to font */
+      transition: color 0.2s ease-in-out;
+    }
+
+    #contact a:hover {
+      color: #3b82f6;
+      text-decoration: underline;
+    }
+    
+    /* background */
+    #image-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw; /* viewport width */
+      height: 100vh; /* viewport height */
+      background-color: rgba(20, 23, 28, 0.95);
+      z-index: 2000; /* float over */
+      display: flex;
+      justify-content: center; /* lock image in center */
+      align-items: center;
+      transition: opacity 0.2s ease;
+    }
+    
+    /* scaling */
+    #img-overlay {
+      max-width: 85%;
+      max-height: 85%;
+      border-radius: 6px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+    
+    #overlay-close {
+      position: absolute; /* positioning : anywhere inside closest positioned ancestor */
+      top: 40px;
+      color: #9ab0c5;
+      right: 50px;
+      font-size: 3em;
+      cursor: pointer;
+    }
+    
+    #overlay-close:hover {
+      color: #ffffffff;
+    }
+    
+    /* Clean text accordion for UX case studies */
+    .case-study-dropdown {
+      margin-top: 25px;
+      margin-bottom: 15px;
+    }
+
+    .case-study-dropdown summary {
+      display: inline-block;
+      color: #93c5fd;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: color 0.2s ease;
+    }
+
+    .case-study-dropdown summary:hover {
+      color: #3b82f6;
+    }
+
+    /* Adds a subtle line between the button and the text when opened */
+    .case-study-content {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #475569;
+    }
+
+    /* compairson */
+    .image-comparison-grid {
+      display: flex;
+      gap: 20px;
+      margin-top: 15px;
+      margin-bottom: 25px;
+    }
+
+    .image-column {
+      flex: 1;
+      text-align: center;
+      position: relative; /* positioning : natural spot in document flow */
+    }
+
+    .image-column p {
+      margin-top: 0;
+    }
+
+    /* forces all images to have identical dimensions  */
+    .image-column .mock-img {
+      display: block;
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      object-position: top center; /* top edge, horizontal center */
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .project-card a:hover {
+      background-color: #2563eb;
+      transform: translateY(-1px);
+    }
+    
+    /* purple modifier for buttons : ux/ui design */
+    .project-card a.btn-purple { /* btn-purple in project-card anchor nav */
+      background-color: #8b5cf6;
+    }
+    
+    .project-card a.btn-purple:hover {
+      background-color: #7c3aed;
+    }
+
+    /* for mobile response */
+    @media (max-width: 600px) {
+      .image-comparison-grid {
+        flex-direction: column; /* column style */
+      }
+    }
+    /* The Collapsible Box Container */
+    .code-dropdown {
+      margin-top: 15px;
+      margin-bottom: 15px;
+      background-color: #1e293b; /* Darker than the card to look like an inset box */
+      border-radius: 6px;
+      border: 1px solid #475569;
+      overflow: hidden;
+    }
+
+    /* The Clickable Button */
+    .code-dropdown summary {
+      padding: 10px 15px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.85rem;
+      color: #93c5fd; /* Light blue text */
+      cursor: pointer;
+      font-weight: 600;
+      background-color: #282C34; /* slightly lighter top bar */
+      user-select: none; /* Prevents text highlighting when double clicking */
+    }
+
+    /* Hover effect for the clickable button */
+    .code-dropdown summary:hover {
+      background-color: #2c313a;
+      color: #3b82f6;
+    }
+
+    /* The Code Text Area */
+    .code-dropdown pre {
+      margin: 0;
+      padding: 15px;
+      overflow-x: auto; /* Adds scrollbar */
+    }
+
+    .code-dropdown code {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 0.85rem;
+      color: #a78bfa;
+    }
+    /* targets every clickable image */
+    .mock-img {
+      cursor: pointer;
+      transition: all 0.2s ease-in-out; /* animation */
+}
+
+/* images react when hovered */
+    .mock-img:hover {
+      transform: translateY(-2px); /* Lifts image up slightly */
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5); /* deeper shadow */
+      border-color: #3b82f6; /* tints the border blue */
+}
+  </style>
+</head>
+
+<body>
+  
+  <header>
+    <div class="portfolio-wrap"> 
+      <h1>Kara Rippe</h1>
+      <p>Student of Psychology and Data Science | University of Kansas</p>
+    </div>
+  </header>
+  
+  <div class="wallpaper-background">
+    <section class="about">
+        <h2>About Me</h2>
+        <p>I am currently a senior at the University of Kansas, interested in the optimization of digital inferfaces with a focus on high-stress, dynamic environments.</p>
+      </section>
+  </div>
+  
+  <div class="portfolio-wrap">
+    <main>
+
+      <section id="projects">
+        <h2>Projects 🗁</h2>
+        
+        <div class="port-filter">
+          <button class="filter-pill filter-pill-active" onclick="filterProjects('all')">Show All</button>
+          <button class="filter-pill" onclick="filterProjects('ux-project')">UX/UI Design</button>
+          <button class="filter-pill" onclick="filterProjects('data-project')">Data Science/Research</button>
+          <button class="filter-pill" onclick="filterProjects('skills-project')">Skills</button>
+        </div>
+
+       <div class="project-card ux-project">
+          <h4>Low-fidelity Exploration: HUD Design</h4>
+          <p>An interactive design project focused on reduction of cognitive load and player immersion through design decisions.</p>
+          
+          <div class="project-card-section-title">Design Evolution</div>
+          
+          <div class="image-comparison-grid">
+            <div class="image-column">
+              <p style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #9ab0c5; margin-bottom: 8px;">[01] Original Layout</p>
+              <img class="mock-img" src="HUD Design.png" alt="HUD Design">
+            </div>
+            <div class="image-column">
+              <p style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #9ab0c5; margin-bottom: 8px;">[02] Optimized Iteration</p>
+              <img class="mock-img" src="HUD Design 2.png" alt="Cleaned Mockup">
+            </div>
+          </div>
+
+          <details class="case-study-dropdown">
+            <summary>▶ Read Research & Design Process</summary>
+            
+            <div class="case-study-content">
+              <h5>The Goal</h5>
+              <ul>
+                <li>I began to consider the primary elements that are needed for a fantasy RPG: Health bar, inventory, quest markers, ability icons, and minimaps. 
+                I carefully incorporated these into a low-fidelity HUD design to deliver information without reducing player immersion.</li>
+              </ul>
+              
+              <h5>The Approach</h5>
+              <ul>
+                <li>I began researching UI elements within video games.</li>
+                <li>I analyzed common patterns across highly regarded video-game HUDs.</li>
+                <li>I aimed to balance readable and organized content (in terms of size, layout, color).</li>
+              </ul>
+
+              <h5>Design</h5>
+              <ul>
+                <li>Minimap positioned in the corner, providing spatial context and easy navigation.</li>
+                <li>Small Portrait clarifies character choice.</li>
+                <li>Left modal bar displays equipped items and emphasizes the selected weapon.</li>
+                <li>Expandable quickbar for magic selection supports flexibility and maximizes space.</li>
+                <li>Center lock-on mechanic holds focus.</li>
+                <li>Health and mana bars visible only when relevant, reducing clutter and increasing focus.</li>
+              </ul>
+
+              <h5>Takeaways</h5>
+              <ul>
+                <li>UI components must be calibrated for a fast-paced setting.</li>
+                <li>Content sensitive information should be prioritized when there is minimal space allowed.</li>
+                <li>Thematic styling should be consistent and match the given genre.</li>
+              </ul>
+            </div>
+          </details>
+
+        </div>
+
+<div class="project-card ux-project">
+          <h4>Redesign of the Nexus Mods' Front Page</h4>
+          <p>A UX/UI redesign of the Nexus Mods front page to reduce visual clutter and prioritize content organization based on user reports.</p>
+          
+          <div class="project-card-section-title">Interface Comparison for Cognitive Workload Reduction</div>
+          
+          <div class="image-comparison-grid">
+            <div class="image-column">
+              <p style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #9ab0c5; margin-bottom: 8px;">High-Fidelity Mockup (Top)</p>
+              <img class="mock-img" src="1_Nexus.png" alt="Nexus Mods Redesign Mockup View 1">
+            </div>
+            <div class="image-column">
+              <p style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #9ab0c5; margin-bottom: 8px;">Visual Architecture (Top)</p>
+              <img class="mock-img" src="nex2.png" alt="Nexus Redesign 2 View 1">
+            </div>
+          </div>
+
+          <div class="image-comparison-grid">
+            <div class="image-column">
+              <p style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #9ab0c5; margin-bottom: 8px;">High-Fidelity Mockup (Bottom)</p>
+              <img class="mock-img" src="2_Nexus.png" alt="Nexus Mods Redesign Mockup View">
+            </div>
+            <div class="image-column">
+              <p style="font-family: 'Courier New', monospace; font-size: 0.9rem; color: #9ab0c5; margin-bottom: 8px;">Visual Architecture (Bottom)</p>
+              <img class="mock-img" src="nex3.png" alt="Nexus Redesign 2 View">
+            </div>
+          </div>
+
+          <details class="case-study-dropdown">
+            <summary>▶ Read Research & Design Process</summary>
+            
+            <div class="case-study-content">
+              <h5>Qualitative Research</h5>
+              <p>To gather information, I analyzed user discussions across public forums, including Reddit, Quora, and Nexus.</p>
+              <ul>
+                <li>Interface has poor navigation and visual clutter.</li>
+                <li>Overexposure to specific features, such as collections.</li>
+                <li>High density of information and unused space.</li>
+                <li>Distracting elements (miniplayer with advertisements).</li>
+              </ul>
+
+              <h5>Key Insights</h5>
+              <ul>
+                <li>Users struggle to find core content.</li>
+                <li>Visual noise reduces attention and engagement.</li>
+                <li>Overall, the layout does not reflect the priorities of a returning Nexus user.</li>
+              </ul>
+
+              <h5>Psychological Design</h5>
+              <ul>
+                <li>Popular games and curated content were grouped at the top, since many returning users visit the site searching for a specific title or personalized mods.</li>
+                <li>The trending section was originally kept for easy navigation, letting users explore popular content via the “Show All” button. This was later moved to a button for succinctness.</li>
+                <li>Collections were kept compact, using a scroll feature to maximize space and efficiency to minimize cognitive load. </li>
+                <li>The orange and grey color scheme was lightly reduced to improve readability, particularly for buttons.</li>
+                <li>Relocated advertisements to a small strip alone and removed corner miniplayer to preserve focus on the main content and decrease inattentional blindness.</li>
+              </ul>
+
+              <h5>Takeaways</h5>
+              <ul>
+                <li>Proper usability research and testing is necessary to clarify interface weak points and make improvements.</li>
+                <li>Designs choices should seamlessly reflect the priorities of the main userbase.</li>
+                <li>Frustration can be minimized through strategic placement of core content, search bars, sliders, and advertisements and proper use of space.</li>
+                <li>Secondary elements, such as advertisements or promoted features, should not visibly overpower the main purpose of the website.</li>
+              </ul>
+            </div>
+          </details>
+
+          <div style="display: flex; gap: 250px; margin-top: 20px; justify-content: center;">
+            <a href="https://www.figma.com/proto/JwelIS82dsdObyhjCjC4D5/Nexus-Redesign?node-id=553-2&t=qVZaBCryFiDmxADQ-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1" class="btn-purple" target="_blank">View Drafted Prototype</a>
+            <a href="https://www.figma.com/proto/UxcNb1bLKskXYjVZGTyrJe/Nexus-Redesign-2?node-id=4-2&p=f&t=EWXuO4Pe5jQ09HaJ-1&scaling=contain&content-scaling=fixed&page-id=0%3A1" class="btn-purple" target="_blank">View Finalized Prototype</a>
+          </div>
+        </div>
+        
+        
+        
+        <div class="project-card data-project">
+          <h4>Dynamic Analysis of Global Space Missions</h4>
+          <p>Team-based data analysis of space missions ranging from 1957-2022, determining patterns in mission success, rocket durability, and launch outcomes.</p>
+          
+             <details class="code-dropdown">
+<summary>View R Code</summary>
+<pre><code>
+## filtering rocket data
+success_by_rocket <- 
+  space_data |> 
+    select(Rocket, MissionStatus
+  ) |> 
+    mutate(
+      success = MissionStatus == "Success"
+  ) |> 
+  group_by(Rocket) |> 
+  summarize(
+    success_rate = mean(success),
+    missions = n() 
+  ) |> 
+  filter(missions >= 50) |> 
+  arrange(desc(success_rate)) |> 
+  
+## producing bar graph
+  ggplot(
+    aes(
+      x = Rocket,
+      y = success_rate,
+      fill = missions)
+  ) +
+  geom_col(color = "black") +
+  scale_y_continuous(
+    limits = c(0, 1),
+    breaks = seq(0, 1, by = 0.1),
+    labels = scales::percent
+  ) +
+  coord_flip() +
+  scale_fill_gradient(
+    low = "royalblue",
+    high = "midnightblue"
+  ) +
+  labs(
+    x = "Rocket Type",
+    y = "Mission Success Rate",
+    fill = "Total Missions",
+    title = "Rocket Type in Comparison to Mission Success Rate",
+    subtitle = "Partial Failures Counted as Failures",
+    caption = "Data from the Space Missions dataset by Saikat Panja."
+  )
+success_by_rocket
+  </code>
+    </pre>
+      </details>
+          
+          <img src="rocket-types.png" class="mock-img" alt="Data Visualization of Rocket Reliability" style="width: 100%; height: auto; border-radius: 4px; margin-bottom: 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
+          
+          <h5>Role</h5>
+          <ul>
+            <li>Created a visualization comparing rocket type and mission success rate.</li>
+            <li>Showed reliability trends of rocket types over time.</li>
+            <li>Standardized code.</li>
+            <li>Interpreted and communicated results in text.</li>
+          </ul>
+          <a href="Space_Data_Project.html">View Space Mission Analysis</a>
+        </div>
+        
+        <div class="project-card data-project">
+          <h4>Player Engagement Analysis</h4>
+          <p>An examination of <i>Backloggd</i> video game data across forty years, measuring player dynamics, consistent media trends, dominating genres, and overall engagement.</p>
+          
+          <details class="code-dropdown">
+    <summary>View R Code</summary>
+    <pre><code>
+# parsing dates
+games_parsed <-
+  games |> 
+mutate(
+  release_date = mdy(`Release Date`),
+  year = year(release_date)
+)
+
+# filtering NA, and obtaining count of years before 2022
+release_year <-
+  games_parsed |>
+  filter(!is.na(year)) |> 
+  count(year) |> 
+  filter(year <= 2022)
+
+# count of games over time
+game_count <-
+  ggplot(
+  release_year,
+       aes(
+         x = year,
+         y = n
+       )
+    ) +
+  geom_line(color = "#F26522", size = 1) +
+  geom_point(color = "#F26522", size = 2) +
+  scale_y_continuous(breaks = seq(0, 125, by = 25)) +
+    labs(
+      title = "Popular Video Game Releases",
+      y = "Number of Games",
+      x = "Release Year"
+    ) +
+  theme_minimal() +
+  theme(
+  plot.title = element_text(face = "bold", color = "white"),
+  text = element_text(color = "white"),
+  axis.text = element_text(color = "white"),
+  plot.background = element_rect(fill = "black", color = "black"),
+  panel.background = element_rect(fill = "white"))
+
+# filtering years
+# standardizing total
+total_plays_data <-
+  games_parsed |> 
+  filter(!is.na(year) & year <= 2022) |> 
+  group_by(year) |> 
+  summarize(
+    total_annual_plays = sum(as.numeric(Plays), na.rm = TRUE)
+  )
+
+# total plays plot
+total_plays <- 
+  total_plays_data |> 
+ggplot(
+  aes(
+    x = year,
+    y = total_annual_plays
+  )
+) +
+  geom_line(
+    color = "#00B7EB", size = 1) +
+  geom_point(color = "#00B7EB", size = 2) +
+  labs(
+    title = "Total Annual Plays",
+    x = "Release Year",
+    y = "Total Plays"
+  ) +
+  theme_minimal() + theme(
+  plot.title = element_text(face = "bold", color = "white"),
+  text = element_text(color = "white"),
+  axis.text = element_text(color = "white"),
+  plot.background = element_rect(fill = "black", color = "black"),
+  panel.background = element_rect(fill = "white"))
+
+compared_plots <-
+  game_count /  total_plays
+compared_plots +
+  plot_annotation(
+    title = "Evolution of the Game Industry across Forty Years",
+    subtitle = "Comparing Release Volume and Player Engagement (1980-2022)",
+    caption = "Data from Backloggd") &
+  theme(
+    plot.background = element_rect(fill = "black", color = "black"),
+    text = element_text(color = "white")
+  )
+    </code></pre>
+  </details>
+         
+           <img src="player-engagement.png" class="mock-img" alt="Data Visualization of Player Engagement" style="width: 100%; height: auto; border-radius: 4px; margin-bottom: 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
+          <h5>Role</h5>
+          <ul>
+            <li>Produced two line graphs to examine video game trends over time and compared with patchwork.</li>
+            <li>Aided written communication of results.</li>
+            <li>Implemented a consistent, engaging color scheme.</li>
+          </ul>
+          <a href="VideoGamesFinal.html">View Player Engagement Analysis</a>
+        </div>
+
+      </section>
+
+      <div class="project-card skills-project">
+        <h2>Technical Skills</h2>
+        <ul>
+          <li>Data Analysis & Programming: R, Python</li>
+          <li>Web: Basic HTML5/JavaScript/CSS</li>
+          <li>Design: Figma, ClipStudio</li>
+        </ul>
+      </div>
+
+      <section id="contact">
+        <p>Email: <a href="mailto:karaarippe@gmail.com">karaarippe@gmail.com</a></p>
+      </section>
+        
+    </main>
+  </div> 
+  
+  <div id="image-overlay" class="hidden-overlay"> 
+    <span id="overlay-close">&times;</span>
+    <img id="img-overlay" src="" alt="Enlarged View">
+  </div>    
+  
+
+  <script>
+    function filterProjects(category) {
+      const buttons = document.querySelectorAll(".port-filter .filter-pill"); /* select elements and add all to var buttons */
+      buttons.forEach(btn => btn.classList.remove("filter-pill-active")); /* for each button remove active effect */
+      
+      event.currentTarget.classList.add("filter-pill-active"); /* add effect for fired trigger */
+      
+      const cards = document.querySelectorAll(".project-card"); /* retrieve all of DOM element and add to card */
+      
+      cards.forEach(card => {  /* run card array loop */
+        if (category === "all") { /* if card is equal to Show All token */
+          card.classList.remove("hidden-card"); /* remove shield */
+        }
+        else if (card.classList.contains(category)) {  /* if card class aligns to clicked category token */
+          card.classList.remove("hidden-card");  /* remove shield */
+        }
+        else {
+          card.classList.add("hidden-card"); /* otherwise, hide by adding hidden card */
+        }
+      });
+    }
+    
+    const overlay = document.getElementById("image-overlay"); /* grab parent */
+    const overlayImg = document.getElementById("img-overlay"); /* grab child */
+    
+    const portImg = document.querySelectorAll(".mock-img") /* select all .mock-img */
+    
+    portImg.forEach(img => {
+      img.addEventListener("click", (e) => {/* add evenlist for click - event object */
+        const clickedSrc = e.currentTarget.src; /* src path of current live target e image */
+        
+        overlayImg.src = clickedSrc; /* property of overlayImg : src */
+        
+        overlay.classList.remove("hidden-overlay"); /* then, remove overlay */
+      })
+    });
+    
+    /* Combined background and close click listeners to avoid event bubbling bugs */
+    const clickAnywhere = document.getElementById("image-overlay"); /* grab tag */
+    clickAnywhere.addEventListener("click", () => { /* on click event */
+      overlay.classList.add("hidden-overlay"); /* add overlay */
+      overlayImg.src = ""; /* src path none */
+    });
+    
+  </script>
+</body>
+</html>
